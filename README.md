@@ -39,3 +39,34 @@ pip install matplotlib
 ```shell
 pip install seaborn
 ```
+```shell
+import pandas as pd
+ev_data = pd.read_csv('Electric_Vehicle_Population_Data.csv')
+print(ev_data.head())
+```
+![1](https://github.com/aniket3096/Electric_Vehicles_Market/assets/164318183/fe3dd857-7ba5-4c86-929d-11e8613bccf6)
+
+•	Data Cleaning - Ensure the dataset is clean by handling missing values and verifying appropriate data types. This step is crucial for accurate analysis.
+```shell
+ev_data.info()
+```
+
+![2](https://github.com/aniket3096/Electric_Vehicles_Market/assets/164318183/ec5b5d05-34c9-4f38-856e-2f71b6ecdeb0)
+
+```shell
+ev_data.isnull().sum()
+```
+
+```shell
+ev_data = ev_data.dropna()
+```
+
+ ## For the task of market size of electric vehicles analysis, we can explore the following areas:
+
+- EV Adoption Over Time: Analyze the growth of the EV population by model year.
+- Geographical Distribution: Understand where EVs are most commonly registered (e.g., by county or city).
+- EV Types: Breakdown of the dataset by electric vehicle type (BEV, etc.).
+- Make and Model Popularity: Identify the most popular makes and models among the registered EVs.
+- Electric Range Analysis: Analyze the electric range of vehicles to see how EV technology is progressing.
+- Estimated Growth in Market Size: Analyze and find the estimated growth in the market size of electric vehicles.
+
