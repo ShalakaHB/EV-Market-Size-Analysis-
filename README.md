@@ -27,12 +27,12 @@ We will use this dataset for the analysis:  Electric_Vehicle_Population_Data.csv
 ## Step-by-Step Analysis
 •	Importing Necessary Libraries and Loading Data - Begin by importing essential libraries such as pandas, matplotlib, seaborn, numpy, and the curve fit function from scipy.optimize. Load the dataset to start the analysis.
 
-![1](https://github.com/aniket3096/Electric_Vehicles_Market/assets/164318183/fe3dd857-7ba5-4c86-929d-11e8613bccf6)
+
 
 •	Data Cleaning - Ensure the dataset is clean by handling missing values and verifying appropriate data types. This step is crucial for accurate analysis.
 
 
-![2](https://github.com/aniket3096/Electric_Vehicles_Market/assets/164318183/ec5b5d05-34c9-4f38-856e-2f71b6ecdeb0)
+
 
 
 
