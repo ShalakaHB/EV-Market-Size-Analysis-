@@ -27,39 +27,14 @@ We will use this dataset for the analysis:  Electric_Vehicle_Population_Data.csv
 ## Step-by-Step Analysis
 •	Importing Necessary Libraries and Loading Data - Begin by importing essential libraries such as pandas, matplotlib, seaborn, numpy, and the curve fit function from scipy.optimize. Load the dataset to start the analysis.
 
-```shell
-pip install numpy
-```
-```shell
-pip install pandas
-```
-```shell
-pip install matplotlib
-```
-```shell
-pip install seaborn
-```
-```shell
-import pandas as pd
-ev_data = pd.read_csv(r"Electric_Vehicle_Population_Data.csv")
-print(ev_data.head())
-```
 ![1](https://github.com/aniket3096/Electric_Vehicles_Market/assets/164318183/fe3dd857-7ba5-4c86-929d-11e8613bccf6)
 
 •	Data Cleaning - Ensure the dataset is clean by handling missing values and verifying appropriate data types. This step is crucial for accurate analysis.
-```shell
-ev_data.info()
-```
+
 
 ![2](https://github.com/aniket3096/Electric_Vehicles_Market/assets/164318183/ec5b5d05-34c9-4f38-856e-2f71b6ecdeb0)
 
-```shell
-ev_data.isnull().sum()
-```
 
-```shell
-ev_data = ev_data.dropna()
-```
 
  #### For the task of market size of electric vehicles analysis, we can explore the following areas:
 
@@ -71,51 +46,14 @@ ev_data = ev_data.dropna()
 - Estimated Growth in Market Size: Analyze and find the estimated growth in the market size of electric vehicles.
 
 #### Let’s start with analyzing the EV Adoption Over Time by visualizing the number of EVs registered by model year. It will give us an insight into how the EV population has grown over the years
-```shell
-import matplotlib.pyplot as plt
-import seaborn as sns
-sns.set_style("whitegrid")
 
-# EV Adoption Over Time
-plt.figure(figsize=(12, 6))
-ev_adoption_by_year = ev_data['Model Year'].value_counts().sort_index()
-sns.barplot(x=ev_adoption_by_year.index, y=ev_adoption_by_year.values, palette="viridis")
-plt.title('EV Adoption Over Time')
-plt.xlabel('Model Year')
-plt.ylabel('Number of Vehicles Registered')
-plt.xticks(rotation=45)
-plt.tight_layout()
-plt.show()
-```
 
 ![3](https://github.com/aniket3096/Electric_Vehicles_Market/assets/164318183/7a0a7c95-3fe5-40bf-86dc-64cc65f3df9a)
 
 From the above bar chart, it’s clear that EV adoption has been increasing over time, especially noting a significant upward trend starting around 2016. The number of vehicles registered grows modestly up until that point and then begins to rise more rapidly from 2017 onwards. The year 2023 shows a particularly sharp increase in the number of registered EVs, with the bar for 2023 being the highest on the graph, indicating a peak in EV adoption.
 
 #### Now, let’s start by selecting the top 3 counties based on EV registrations and then analyze the distribution of EVs within the cities of those counties:
-```shell
-# geographical distribution at county level
-ev_county_distribution = ev_data['County'].value_counts()
-top_counties = ev_county_distribution.head(3).index
 
-# filtering the dataset for these top counties
-top_counties_data = ev_data[ev_data['County'].isin(top_counties)]
-
-# analyzing the distribution of EVs within the cities of these top counties
-ev_city_distribution_top_counties = top_counties_data.groupby(['County', 'City']).size().sort_values(ascending=False).reset_index(name='Number of Vehicles')
-
-# visualize the top 10 cities across these counties
-top_cities = ev_city_distribution_top_counties.head(10)
-
-plt.figure(figsize=(12, 8))
-sns.barplot(x='Number of Vehicles', y='City', hue='County', data=top_cities, palette="magma")
-plt.title('Top Cities in Top Counties by EV Registrations')
-plt.xlabel('Number of Vehicles Registered')
-plt.ylabel('City')
-plt.legend(title='County')
-plt.tight_layout()
-plt.show()
-```
 ![4](https://github.com/aniket3096/Electric_Vehicles_Market/assets/164318183/cdc509e1-a48f-461b-add5-e01ebfe1ecad)
 
 The above graph compares the number of electric vehicles registered in various cities within three counties: King, Snohomish, and Pierce. The horizontal bars represent cities, and their length corresponds to the number of vehicles registered, colour-coded by county. Here are the key findings from the above graph:
@@ -129,18 +67,7 @@ Overall, the graph indicates that EV adoption is not uniform across the cities a
 
 #### Next, let’s explore the types of electric vehicles represented in this dataset. Understanding the breakdown between different EV types, such as Battery Electric Vehicles (BEV) and Plug-in Hybrid Electric Vehicles (PHEV), can provide insights into consumer preferences and the adoption patterns of purely electric vs. hybrid electric solutions. So, let’s visualize the distribution of electric vehicle types to see which categories are most popular among the registered vehicles:
 
-```shell
-# analyzing the distribution of electric vehicle Types
-ev_type_distribution = ev_data['Electric Vehicle Type'].value_counts()
 
-plt.figure(figsize=(10, 6))
-sns.barplot(x=ev_type_distribution.values, y=ev_type_distribution.index, palette="rocket")
-plt.title('Distribution of Electric Vehicle Types')
-plt.xlabel('Number of Vehicles Registered')
-plt.ylabel('Electric Vehicle Type')
-plt.tight_layout()
-plt.show()
-```
 
  ![5](https://github.com/aniket3096/Electric_Vehicles_Market/assets/164318183/1273e006-d3d0-4f4b-bc80-8713f08eae3a)
 
@@ -151,17 +78,7 @@ Let’s now focus on the popularity of electric vehicle manufacturers and models
 #### So, let’s have a look at the most popular manufacturers and then drill down into the most popular models within those manufacturers:
 
 # analyzing the popularity of EV manufacturers
-```shell
-ev_make_distribution = ev_data['Make'].value_counts().head(10)  # Limiting to top 10 for clarity
 
-plt.figure(figsize=(12, 6))
-sns.barplot(x=ev_make_distribution.values, y=ev_make_distribution.index, palette="cubehelix")
-plt.title('Top 10 Popular EV Makes')
-plt.xlabel('Number of Vehicles Registered')
-plt.ylabel('Make')
-plt.tight_layout()
-plt.show()
-```
 ![6](https://github.com/aniket3096/Electric_Vehicles_Market/assets/164318183/39ff8b9e-53d2-4967-8932-fe2c03655961)
 
 The above chart shows that:
@@ -171,28 +88,8 @@ NISSAN is the second most popular manufacturer, followed by CHEVROLET, though bo
 FORD, BMW, KIA, TOYOTA, VOLKSWAGEN, JEEP, and HYUNDAI follow in decreasing order of the number of registered vehicles.
 
 #### Next, let’s drill down into the most popular models within these top manufacturers to get a more detailed understanding of consumer preferences at the model level:
-```shell
-# selecting the top 3 manufacturers based on the number of vehicles registered
-top_3_makes = ev_make_distribution.head(3).index
 
-# filtering the dataset for these top manufacturers
-top_makes_data = ev_data[ev_data['Make'].isin(top_3_makes)]
 
-# analyzing the popularity of EV models within these top manufacturers
-ev_model_distribution_top_makes = top_makes_data.groupby(['Make', 'Model']).size().sort_values(ascending=False).reset_index(name='Number of Vehicles')
-
-# visualizing the top 10 models across these manufacturers for clarity
-top_models = ev_model_distribution_top_makes.head(10)
-
-plt.figure(figsize=(12, 8))
-sns.barplot(x='Number of Vehicles', y='Model', hue='Make', data=top_models, palette="viridis")
-plt.title('Top Models in Top 3 Makes by EV Registrations')
-plt.xlabel('Number of Vehicles Registered')
-plt.ylabel('Model')
-plt.legend(title='Make', loc='center right')
-plt.tight_layout()
-plt.show()
-```
 ![7](https://github.com/aniket3096/Electric_Vehicles_Market/assets/164318183/dc020512-f6ff-4b2b-a042-89bbdffd9fea)
 
 The above graph shows the distribution of electric vehicle registrations among different models from the top three manufacturers: TESLA, NISSAN, and CHEVROLET. Here are the findings:
@@ -205,18 +102,7 @@ NISSAN’s ARIYA and CHEVROLET’s SPARK have the least number of registrations 
 
 #### Next, we’ll explore the electric range of vehicles, which is a critical factor for analyzing the market size of electric vehicles. The electric range indicates how far an EV can travel on a single charge, and advancements in battery technology have been steadily increasing these ranges over the years. So, let’s look at the distribution of electric ranges in the dataset and identify any notable trends, such as improvements over time or variations between different vehicle types or manufacturers:
 
-```shell
-# analyzing the distribution of electric range
 
-plt.figure(figsize=(12, 6))
-sns.histplot(ev_data['Electric Range'], bins=30, kde=True, color='royalblue')
-plt.title('Distribution of Electric Vehicle Ranges')
-plt.xlabel('Electric Range (miles)')
-plt.ylabel('Number of Vehicles')
-plt.axvline(ev_data['Electric Range'].mean(), color='red', linestyle='--', label=f'Mean Range: {ev_data["Electric Range"].mean():.2f} miles')
-plt.legend()
-plt.show()
-```
 ![8](https://github.com/aniket3096/Electric_Vehicles_Market/assets/164318183/2b59e36d-4066-4e4c-b02d-0ae8a61131a8)
 
 The above graph shows the mean electric range. Key observations from the graph include:
@@ -229,18 +115,6 @@ It suggests that while there are EVs available with high electric ranges, the av
 
 Now, let’s delve into the trend of electric ranges over model years, which can provide insights into how advancements in battery technology and vehicle design have influenced the electric range capabilities of electric vehicles over time. A positive trend in this analysis would indicate continuous improvements, offering consumers EVs with longer driving ranges and potentially addressing one of the major concerns regarding the EV market (range anxiety):
 
-```shell
-# calculating the average electric range by model year
-average_range_by_year = ev_data.groupby('Model Year')['Electric Range'].mean().reset_index()
-
-plt.figure(figsize=(12, 6))
-sns.lineplot(x='Model Year', y='Electric Range', data=average_range_by_year, marker='o', color='green')
-plt.title('Average Electric Range by Model Year')
-plt.xlabel('Model Year')
-plt.ylabel('Average Electric Range (miles)')
-plt.grid(True)
-plt.show()
-```
 
 ![9](https://github.com/aniket3096/Electric_Vehicles_Market/assets/164318183/61e82194-1253-4cd7-8304-314b3234201e)
 
@@ -254,20 +128,7 @@ The data suggest that while there have been fluctuations, the overall trend over
 
 Next, let’s explore how electric ranges vary among the top manufacturers and models. This analysis can reveal how different manufacturers are addressing the crucial aspect of electric range and highlight which models stand out for their superior range capabilities:
 
-```shell
-average_range_by_model = top_makes_data.groupby(['Make', 'Model'])['Electric Range'].mean().sort_values(ascending=False).reset_index()
 
-# the top 10 models with the highest average electric range
-top_range_models = average_range_by_model.head(10)
-
-plt.figure(figsize=(12, 8))
-barplot = sns.barplot(x='Electric Range', y='Model', hue='Make', data=top_range_models, palette="cool")
-plt.title('Top 10 Models by Average Electric Range in Top Makes')
-plt.xlabel('Average Electric Range (miles)')
-plt.ylabel('Model')
-plt.legend(title='Make', loc='center right')
-plt.show()
-```
 
 ![10](https://github.com/aniket3096/Electric_Vehicles_Market/assets/164318183/9bdd5099-568d-4232-a84c-ed33b93e08b7)
 
@@ -276,11 +137,7 @@ The TESLA ROADSTER has the highest average electric range among the models liste
 #### Estimated Market Size Analysis of Electric Vehicles in the United States
 Now, let’s move forward towards finding the estimated market size of electric vehicles in the United States. I’ll first count the number of EVs registered every year:
 
-```shell
-# calculate the number of EVs registered each year
-ev_registration_counts = ev_data['Model Year'].value_counts().sort_index()
-ev_registration_counts
-```
+
 
 ![WhatsApp Image 2024-07-25 at 3 10 35 PM](https://github.com/user-attachments/assets/d50193e6-e4fb-4bd9-98ef-7c0758c5b9e6)
 
@@ -294,59 +151,13 @@ To forecast the total number of EVs expected to be registered in 2024, we can us
 
 We’ll calculate the Compound Annual Growth Rate (CAGR) between a recent year with complete data (2023) and an earlier year to project the 2024 figures. Additionally, using this growth rate, we can estimate the market size for the next five years. Let’s proceed with these calculations:
 
-```shell
-from scipy.optimize import curve_fit
-import numpy as np
 
-# filter the dataset to include years with complete data, assuming 2023 is the last complete year
-filtered_years = ev_registration_counts[ev_registration_counts.index <= 2023]
 
-# define a function for exponential growth to fit the data
-def exp_growth(x, a, b):
-    return a * np.exp(b * x)
-
-# prepare the data for curve fitting
-x_data = filtered_years.index - filtered_years.index.min()
-y_data = filtered_years.values
-
-# fit the data to the exponential growth function
-params, covariance = curve_fit(exp_growth, x_data, y_data)
-
-# use the fitted function to forecast the number of EVs for 2024 and the next five years
-forecast_years = np.arange(2024, 2024 + 6) - filtered_years.index.min()
-forecasted_values = exp_growth(forecast_years, *params)
-
-# create a dictionary to display the forecasted values for easier interpretation
-forecasted_evs = dict(zip(forecast_years + filtered_years.index.min(), forecasted_values))
-
-print(forecasted_evs)
-```
 ![WhatsApp Image 2024-07-25 at 3 14 38 PM](https://github.com/user-attachments/assets/1f52f081-27f9-427c-a583-2a2abba4bc5b)
 
 Now, let’s plot the estimated market size data:
 
-```shell
-# prepare data for plotting
-years = np.arange(filtered_years.index.min(), 2029 + 1)
-actual_years = filtered_years.index
-forecast_years_full = np.arange(2024, 2029 + 1)
 
-# actual and forecasted values
-actual_values = filtered_years.values
-forecasted_values_full = [forecasted_evs[year] for year in forecast_years_full]
-
-plt.figure(figsize=(12, 8))
-plt.plot(actual_years, actual_values, 'bo-', label='Actual Registrations')
-plt.plot(forecast_years_full, forecasted_values_full, 'ro--', label='Forecasted Registrations')
-
-plt.title('Current & Estimated EV Market')
-plt.xlabel('Year')
-plt.ylabel('Number of EV Registrations')
-plt.legend()
-plt.grid(True)
-
-plt.show()
-```
 ![WhatsApp Image 2024-07-25 at 3 17 33 PM](https://github.com/user-attachments/assets/5dd7aced-cdb1-4421-abef-210805e0f371)
 
 From the above graph, we can see:
